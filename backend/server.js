@@ -3,7 +3,8 @@ const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const cors = require('cors');
-const userRoute = require('./routes/userRoute')
+const userRoute = require('./routes/userRoute');
+const customerRoute = require('./routes/customerRoute');
 
 
 const app = express();
@@ -16,7 +17,8 @@ app.use(bodyParser.json());
 
 
 // Route Middleware
-app.use("/api/users",userRoute)
+app.use("/api/v1/users",userRoute);
+app.use("/api/v1/customers",customerRoute);
 
 const PORT = process.env.PORT || 5000;
 
