@@ -19,7 +19,7 @@ exports.createInventory = async (req, res) => {
 
         await inventory.save();
 
-        res.status(201).json({ message: 'Item added successfully!' });
+        res.status(201).json({ message: 'Item added successfully!',inventory });
     } catch (error) {
         if (error.code === 11000) {
             res.status(400).json({ message: 'Item name already exists!' });
@@ -49,7 +49,7 @@ exports.updateItem = async(req,res)=>{
     try {
         
         const updatedItem = await Inventory.findByIdAndUpdate(req.params.id,req.body,{new:true});
-        res.json(updatedItem);
+        res.json({message:'Updated Successfully',updatedItem});
 
     } catch (error) {
         if (error.code === 11000) {

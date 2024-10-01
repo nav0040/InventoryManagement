@@ -4,7 +4,7 @@ const router = express.Router();
 
 
 router.post("/create",createCustomer);
-router.post("/all",getAllCustomers);
+router.get("/all",getAllCustomers);
 
 
 

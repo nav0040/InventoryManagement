@@ -15,7 +15,7 @@ exports.createCustomer = async (req, res) => {
         const customer = new Customer({ name, address, mobileNumber });
 
         await customer.save();
-        res.status(201).json({ message: 'Customer added successfully!' });
+        res.status(201).json({ message: 'Customer added successfully!',customer });
     } catch (error) {
         if (error.code === 11000) {
             res.status(400).json({ message: 'Customer name or mobile number already exists!' });
@@ -29,7 +29,7 @@ exports.createCustomer = async (req, res) => {
 // Get all customers
 exports.getAllCustomers = async(req,res)=>{
     try {
-        const customers = await Customer.find();
+        const customers = await Customer.find().sort({createdAt:-1});
         res.json(customers);
     } catch (error) {
         res.status(500).json({ message: error.message });

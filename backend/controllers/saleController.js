@@ -9,17 +9,14 @@ exports.createSale = async (req, res) => {
 
         const { itemId, quantity, customerId, saleType } = req.body;
 
-        // check if item exists
         const item = await Inventory.findById(itemId);
         if (!item) return res.status(404).json({ message: 'Item not found' });
 
 
-        // check if sufficient quantity is available
         if (item.quantity < quantity) return res.status(400).json({
             message: 'Not enough stock available'
         });
 
-        // if sale is for a customer, validate the customer
         let customer = null;
 
         if (saleType === 'Customer') {
@@ -39,7 +36,6 @@ exports.createSale = async (req, res) => {
 
         await newSale.save();
 
-        // update the stock
         item.quantity = item.quantity - quantity;
         await item.save();
 
@@ -56,7 +52,7 @@ exports.createSale = async (req, res) => {
 // Get Sales Report
 exports.getSalesReport = async (req, res) => {
     try {
-        const sales = await Sale.find().populate('item customer');
+        const sales = await Sale.find().populate('item customer').sort({date:-1});
         res.status(200).json(sales)
     } catch (error) {
         res.status(500).json({ message: error.message });
@@ -68,7 +64,7 @@ exports.getSalesReport = async (req, res) => {
 exports.getCustomerLedger = async (req, res) => {
     try {
         const customerId = req.params.customerId;
-        const sales = await Sale.find({ customer: customerId }).populate('item');
+        const sales = await Sale.find({ customer: customerId }).populate('item customer');
         if (!sales) return res.status(404).json({ message: 'No transactions found for this customer' });
         res.status(200).json(sales);
     } catch (error) {

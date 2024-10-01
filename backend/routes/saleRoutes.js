@@ -5,3 +5,6 @@ const router = express.Router();
 router.post('/create',createSale);
 router.get('/report',getSalesReport);
 router.get('/customer/:customerId',getCustomerLedger)
+
+
+module.exports = router;
